@@ -8,31 +8,22 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "TAlertView"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of TAlertView."
-  s.description      = <<-DESC
-                       An optional longer description of TAlertView
+  s.name            = "TAlertView"
+  s.version         = "0.1.0"
+  s.summary         = "TAlertView is a replacement for UIAlertView"
+  s.description     = <<-DESC
+
 
                        * Markdown format.
                        * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/TAlertView"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
-  s.license          = 'MIT'
-  s.author           = { "Washington" => "mirandaacevedo@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/TAlertView.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.platform     = :ios, '7.0'
-  s.requires_arc = true
-
-  s.source_files = 'Pod/Classes'
-  s.resource_bundles = {
-    'TAlertView' => ['Pod/Assets/*.png']
-  }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.homepage        = "https://github.com/tellmarket/"
+  s.screenshots     = "https://github.com/tellmarket/TAlertView/raw/master/Github/Example.gif"
+  s.license         = 'MIT'
+  s.author          = { "Washington Miranda" => "mirandaacevedo@gmail.com" }
+  s.source          = { :git => "https://github.com/tellmarket/TAlertView.git", :tag => "v{spec.version}" }
+  s.platform        = :ios, '7.0'
+  s.requires_arc    = true
+  s.source_files    = 'Pod/Classes'
+  s.frameworks      = 'UIKit'
 end

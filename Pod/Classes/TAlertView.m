@@ -71,9 +71,8 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 {
     if (buttonsAlign == TAlertViewButtonsAlignHorizontal && _buttons &&
         [_buttons count] > TAlertViewHorizontalButtonCountMax) {
-        if (DEBUG) {
-            NSLog(@"TAlertViewButtonsAlignHorizontal cant be used with more than %i", (int)TAlertViewHorizontalButtonCountMax);
-        }
+        
+        NSLog(@"TAlertViewButtonsAlignHorizontal cant be used with more than %i", (int)TAlertViewHorizontalButtonCountMax);
         _buttonsAlign = TAlertViewButtonsAlignVertical;
     } else {
         _buttonsAlign = buttonsAlign;

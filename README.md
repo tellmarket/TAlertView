@@ -1,5 +1,15 @@
 # TAlertView
 
+## Preview
+
+![Screenshot of Input Examples](Github/Example.gif)
+
+## Features
+
+- simple to use
+- block syntax
+- physically animated user interaction
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
@@ -12,24 +22,28 @@ it, simply add the following line to your Podfile:
 
 	pod "TAlertView"
 
-## Example
+## How To Use It
 
-![Screenshot of Input Examples](Github/Example.gif)
+### Simple
 
-```objc
-
-//Alert 6
-TAlertView *alert = [[TAlertView alloc] initWithTitle:nil
-                                                  message:@"This alert show two buttons horizontally"
-                                                  buttons:@[@"No", @"Yes"]
-                                              andCallBack:^(TAlertView *alertView, NSInteger buttonIndex) {}];
-    alert.buttonsAlign = TAlertViewButtonsAlignHorizontal;
-    [alert showAsMessage];
-
-//Alert 1
+```
 [[[TAlertView alloc] initWithTitle:@"Great!" andMessage:@"This is a basic alert"] show];
 
+```
 
+
+### Or with buttons
+
+
+```
+TAlertView *alert = [[TAlertView alloc] initWithTitle:nil
+                                              message:@"This alert show two buttons horizontally"
+                                              buttons:@[@"No", @"Yes"]
+                                          andCallBack:^(TAlertView *alertView, NSInteger buttonIndex) {
+                                                          //Your actions
+                                                      }];
+alert.buttonsAlign = TAlertViewButtonsAlignHorizontal;
+[alert showAsMessage];
 
 ```
 

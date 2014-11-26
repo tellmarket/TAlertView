@@ -109,7 +109,7 @@ THE SOFTWARE.
 
 ## TAlertView
 
-Copyright (c) 2014 Washington <mirandaacevedo@gmail.com>
+Copyright (c) 2014 Washington Miranda <mirandaacevedo@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
