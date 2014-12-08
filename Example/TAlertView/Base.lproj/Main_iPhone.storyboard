@@ -18,12 +18,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IqU-Im-cZY">
-                                <rect key="frame" x="80" y="89" width="160" height="284"/>
+                                <rect key="frame" x="80" y="89" width="160" height="343"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISr-1o-Whx">
                                         <rect key="frame" x="57" y="8" width="46" height="30"/>
                                         <state key="normal" title="Alert 1">
-                                            <color key="titleColor" red="1" green="0.047336489295537687" blue="0.77018915998445681" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -33,7 +32,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zH6-K6-tdS">
                                         <rect key="frame" x="57" y="46" width="46" height="30"/>
                                         <state key="normal" title="Alert 2">
-                                            <color key="titleColor" red="1" green="0.047336489295537687" blue="0.77018915998445681" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -43,7 +41,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AqQ-E2-4kD">
                                         <rect key="frame" x="57" y="84" width="46" height="30"/>
                                         <state key="normal" title="Alert 3">
-                                            <color key="titleColor" red="1" green="0.047336489295537687" blue="0.77018915998445681" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -53,7 +50,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WzK-Sl-9d3">
                                         <rect key="frame" x="57" y="122" width="46" height="30"/>
                                         <state key="normal" title="Alert 4">
-                                            <color key="titleColor" red="1" green="0.047336489295537687" blue="0.77018915998445681" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -63,7 +59,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnD-oR-50y">
                                         <rect key="frame" x="57" y="160" width="46" height="30"/>
                                         <state key="normal" title="Alert 5">
-                                            <color key="titleColor" red="1" green="0.047336489295537687" blue="0.77018915998445681" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -73,7 +68,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g5b-t3-K8j">
                                         <rect key="frame" x="57" y="198" width="46" height="30"/>
                                         <state key="normal" title="Alert 6">
-                                            <color key="titleColor" red="1" green="0.047336489299999999" blue="0.77018916000000004" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -83,11 +77,19 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4P-l6-U5o">
                                         <rect key="frame" x="57" y="236" width="46" height="30"/>
                                         <state key="normal" title="Alert 7">
-                                            <color key="titleColor" red="1" green="0.047336489299999999" blue="0.77018916000000004" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="alert7:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="wkF-6d-ufj"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iPq-Do-kxI">
+                                        <rect key="frame" x="8" y="274" width="144" height="30"/>
+                                        <state key="normal" title="Default UIAlertView">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="defaultAlert:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uBv-fL-FPC"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -104,10 +106,10 @@
                                 </connections>
                             </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" red="0.20250957372914735" green="1" blue="0.26379813537433161" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="IqU-Im-cZY" secondAttribute="centerX" id="Akf-Kz-pTP"/>
-                            <constraint firstAttribute="centerY" secondItem="IqU-Im-cZY" secondAttribute="centerY" id="gLq-Td-WyL"/>
+                            <constraint firstItem="IqU-Im-cZY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="69" id="7Xo-e6-cxa"/>
+                            <constraint firstItem="IqU-Im-cZY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="64" id="bba-iW-GnR"/>
                         </constraints>
                     </view>
                 </viewController>

@@ -11,6 +11,10 @@
 
 @implementation TViewController
 
+- (IBAction)defaultAlert:(id)sender {
+    [[[UIAlertView alloc] initWithTitle:@"Great!" message:@"This is default UIAlertView" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil] show];
+}
+
 - (IBAction)alert1:(id)sender {
     [[[TAlertView alloc] initWithTitle:@"Great!" andMessage:@"This is a basic alert"] show];
 }
