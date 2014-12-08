@@ -23,13 +23,16 @@ typedef NS_ENUM(NSUInteger, TAlertViewButtonsAlign) {
 
 @interface TAlertView : UIView
 
-@property (nonatomic, strong) UIColor *alertBackgroundColor     UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIFont  *titleFont                UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *messageColor             UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIFont  *messageFont              UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *buttonsTextColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIFont  *buttonsFont              UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *separatorsLinesColor     UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor   *alertBackgroundColor       UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont    *titleFont                  UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor   *messageColor               UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont    *messageFont                UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor   *buttonsTextColor           UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont    *buttonsFont                UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor   *separatorsLinesColor       UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont    *tapToCloseFont             UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor   *tapToCloseColor            UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSString  *tapToCloseText             UI_APPEARANCE_SELECTOR;
 
 @property (assign, nonatomic) BOOL tapToClose;
 @property (assign, nonatomic) CGFloat timeToClose;

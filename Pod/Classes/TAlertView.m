@@ -53,6 +53,9 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     appearance.buttonsTextColor     = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
     appearance.buttonsFont          = [UIFont systemFontOfSize:14];
     appearance.separatorsLinesColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.5f];
+    appearance.tapToCloseFont       = [UIFont systemFontOfSize:10];
+    appearance.tapToCloseColor      = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
+    appearance.tapToCloseText       = @"Tap to close";
     
     NSArray *styles = @[@(TAlertViewStyleNeutral),
                         @(TAlertViewStyleInformation),
@@ -184,6 +187,34 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
         for (UIView *separatorsLine in _separatorsLines) {
             separatorsLine.backgroundColor = separatorsLinesColor;
         }
+    }
+}
+
+-(void) setTapToCloseFont:(UIFont *)tapToCloseFont {
+    _tapToCloseFont = tapToCloseFont;
+    
+    if (_closeLabel) {
+        _closeLabel.font = _tapToCloseFont;
+    }
+}
+
+-(void) setTapToCloseColor:(UIColor *)tapToCloseColor {
+    _tapToCloseColor = tapToCloseColor;
+    
+    if (_closeLabel) {
+        _closeLabel.textColor = tapToCloseColor;
+    }
+}
+
+-(void) setTapToCloseText:(NSString *)tapToCloseText {
+    _tapToCloseText = tapToCloseText;
+    
+    if (_closeLabel) {
+        [self setLabel:_closeLabel text:_tapToCloseText];
+        
+        CGRect aletViewFrame = _alertView.frame;
+        aletViewFrame.size.height = CGRectGetMaxY(_closeLabel.frame)+(self.frame.size.height/75.0f)/2.0f;
+        _alertView.frame = aletViewFrame;
     }
 }
 
@@ -349,11 +380,6 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 
 #pragma mark UICollisionBehaviorDelegate
 
-- (void)collisionBehavior:(UICollisionBehavior*)behavior beganContactForItem:(id <UIDynamicItem>)item1 withItem:(id <UIDynamicItem>)item2 atPoint:(CGPoint)p
-{
-    item1.transform = CGAffineTransformConcat(item1.transform, CGAffineTransformMakeRotation(0));
-    item2.transform = CGAffineTransformConcat(item2.transform, CGAffineTransformMakeRotation(0));
-}
 
 #pragma mark private
 
@@ -458,10 +484,10 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
         [self addGestureRecognizer:tap];
         
         _closeLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
-        _closeLabel.font = [UIFont systemFontOfSize:10];
-        _closeLabel.textColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
+        _closeLabel.font = _tapToCloseFont;
+        _closeLabel.textColor = _tapToCloseColor;
         _closeLabel.textAlignment = NSTextAlignmentCenter;
-        [self setLabel:_closeLabel text:@"Tap to close"];
+        [self setLabel:_closeLabel text:_tapToCloseText];
         [_alertView addSubview:_closeLabel];
         
         yPos = CGRectGetMaxY(_closeLabel.frame)+insideVerticalMargin/2.0f;

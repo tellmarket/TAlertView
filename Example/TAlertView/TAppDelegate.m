@@ -13,25 +13,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [TAlertView appearance].alertBackgroundColor= [[UIColor yellowColor] colorWithAlphaComponent:0.6];
-    [TAlertView appearance].titleFont           = [UIFont fontWithName:@"Arial" size:18];
-    [TAlertView appearance].messageColor        = [UIColor whiteColor];
-    [TAlertView appearance].messageFont         = [UIFont fontWithName:@"Arial" size:18];
-    [TAlertView appearance].buttonsTextColor    = [UIColor whiteColor];
-    [TAlertView appearance].buttonsFont         = [UIFont fontWithName:@"Arial" size:18];
-    [TAlertView appearance].separatorsLinesColor= [UIColor redColor];
-    [[TAlertView appearance] setTitleColor:[UIColor brownColor] forAlertViewStyle:TAlertViewStyleInformation];
-    [[TAlertView appearance] setDefaultTitle:@"Info" forAlertViewStyle:TAlertViewStyleInformation];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[[TAlertView alloc] initWithTitle:nil
-                                   message:@"message"
-                                   buttons:@[@"1", @"2"]
-                               andCallBack:^(TAlertView *alertView, NSInteger buttonIndex) {
-                                   
-                               }] show];
-    });
-    
     // Override point for customization after application launch.
     return YES;
 }
