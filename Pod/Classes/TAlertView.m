@@ -28,9 +28,63 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 
 @property (assign, nonatomic) CGRect screenFrame;
 
+@property (strong, nonatomic) NSMutableArray        *buttonsViews;
+@property (strong, nonatomic) NSMutableArray        *separatorsLines;
+@property (strong, nonatomic) UILabel               *messageLabel;
+@property (strong, nonatomic) UILabel               *titleLabel;
+@property (strong, nonatomic) UILabel               *closeLabel;
+@property (strong, nonatomic) NSMutableDictionary   *titleColorForStyle;
+@property (strong, nonatomic) NSMutableDictionary   *defaultTitleForStyle;
+
 @end
 
 @implementation TAlertView
+
++ (void)initialize
+{
+    if (self != [TAlertView class])
+        return;
+    
+    TAlertView *appearance          = [self appearance];
+    appearance.alertBackgroundColor = [UIColor whiteColor];
+    appearance.titleFont            = [UIFont systemFontOfSize:18];
+    appearance.messageColor         = [UIColor colorWithRed:0.3f green:0.3f blue:0.3f alpha:1.0f];
+    appearance.messageFont          = [UIFont systemFontOfSize:14];
+    appearance.buttonsTextColor     = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
+    appearance.buttonsFont          = [UIFont systemFontOfSize:14];
+    appearance.separatorsLinesColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:0.5f];
+    
+    NSArray *styles = @[@(TAlertViewStyleNeutral),
+                        @(TAlertViewStyleInformation),
+                        @(TAlertViewStyleSuccess),
+                        @(TAlertViewStyleWarning),
+                        @(TAlertViewStyleError)];
+    
+    for (NSNumber *styleNumber in styles) {
+        TAlertViewStyle style = [styleNumber intValue];
+        switch (style) {
+            case TAlertViewStyleError:
+                [appearance setTitleColor:[UIColor redColor] forAlertViewStyle:style];
+                [appearance setDefaultTitle:@"Oops..." forAlertViewStyle:style];
+                break;
+            case TAlertViewStyleWarning:
+                [appearance setTitleColor:[UIColor orangeColor] forAlertViewStyle:style];
+                [appearance setDefaultTitle:@"Warning" forAlertViewStyle:style];
+                break;
+            case TAlertViewStyleSuccess:
+                [appearance setTitleColor:[UIColor greenColor] forAlertViewStyle:style];
+                [appearance setDefaultTitle:@"Success!" forAlertViewStyle:style];
+                break;
+            case TAlertViewStyleInformation:
+                [appearance setTitleColor:[UIColor blueColor] forAlertViewStyle:style];
+                break;
+            case TAlertViewStyleNeutral:
+            default:
+                break;
+        }
+    }
+    
+}
 
 +(void)hideAll
 {
@@ -50,27 +104,115 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 -(id)initWithTitle:(NSString*)title message:(NSString*)message buttons:(NSArray*)buttons andCallBack:(void (^)(TAlertView *alertView, NSInteger buttonIndex))callBackBlock
 {
     if (self = [super init]) {
-        _callBackBlock  = callBackBlock;
-        _tapToClose     = YES;
-        _timeToClose    = 0;
-        _title          = title;
-        _message        = message;
-        _buttons        = buttons;
-        _buttonsAlign   = TAlertViewButtonsAlignVertical;
+        _callBackBlock          = callBackBlock;
+        _tapToClose             = YES;
+        _timeToClose            = 0;
+        _title                  = title;
+        _message                = message;
+        _buttonsTexts           = buttons;
+        _buttonsAlign           = TAlertViewButtonsAlignVertical;
+        _buttonsViews           = [[NSMutableArray alloc] init];
+        _separatorsLines        = [[NSMutableArray alloc] init];
+        _titleColorForStyle     = [[NSMutableDictionary alloc] init];
+        _defaultTitleForStyle   = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
--(void)setButtons:(NSArray *)buttons
+#pragma mark UI_APPEARANCE_SELECTOR setters
+
+-(void)setAlertBackgroundColor:(UIColor *)alertBackgroundColor {
+    _alertBackgroundColor = alertBackgroundColor;
+    
+    if (_alertView) {
+        _alertView.backgroundColor = alertBackgroundColor;
+    }
+}
+
+-(void)setTitleFont:(UIFont *)titleFont {
+    _titleFont = titleFont;
+    
+    if (_titleLabel) {
+        _titleLabel.font = titleFont;
+    }
+}
+
+-(void)setMessageColor:(UIColor *)messageColor {
+    _messageColor = messageColor;
+    
+    if (_messageLabel) {
+        _messageLabel.textColor = messageColor;
+    }
+}
+
+-(void)setMessageFont:(UIFont *)messageFont {
+    _messageFont = messageFont;
+    
+    if (_messageLabel) {
+        _messageLabel.font = messageFont;
+    }
+}
+
+-(void)setButtonsTextColor:(UIColor *)buttonsTextColor {
+    _buttonsTextColor = buttonsTextColor;
+    
+    for (UIView *button in _buttonsViews) {
+        for (id buttonSubview in [button subviews]) {
+            if ([buttonSubview isKindOfClass:[UILabel class]]) {
+                ((UILabel*)buttonSubview).textColor = buttonsTextColor;
+            }
+        }
+    }
+}
+
+-(void)setButtonsFont:(UIFont *)buttonsFont {
+    _buttonsFont = buttonsFont;
+    
+    for (UIView *button in _buttonsViews) {
+        for (id buttonSubview in [button subviews]) {
+            if ([buttonSubview isKindOfClass:[UILabel class]]) {
+                ((UILabel*)buttonSubview).font = buttonsFont;
+            }
+        }
+    }
+}
+
+-(void)setSeparatorsLinesColor:(UIColor *)separatorsLinesColor {
+    _separatorsLinesColor = separatorsLinesColor;
+    
+    if (_separatorsLines) {
+        for (UIView *separatorsLine in _separatorsLines) {
+            separatorsLine.backgroundColor = separatorsLinesColor;
+        }
+    }
+}
+
+-(void)setTitleColor:(UIColor*)color forAlertViewStyle:(TAlertViewStyle)style {
+    _titleColorForStyle[@(style)] = color;
+    if (self.style == style && _titleLabel) {
+        _titleLabel.textColor = color;
+    }
+}
+
+-(void)setDefaultTitle:(NSString*)defaultTitle forAlertViewStyle:(TAlertViewStyle)style {
+    _defaultTitleForStyle[@(style)] = defaultTitle;
+    if (self.style == style && _titleLabel) {
+        _titleLabel.text = defaultTitle;
+    }
+}
+
+#pragma mark setters
+
+-(void)setButtonsTexts:(NSArray *)buttons
 {
-    _buttons = buttons;
+    _buttonsTexts = buttons;
     [self setButtonsAlign:_buttonsAlign];
 }
 
 -(void)setButtonsAlign:(TAlertViewButtonsAlign)buttonsAlign
 {
-    if (buttonsAlign == TAlertViewButtonsAlignHorizontal && _buttons &&
-        [_buttons count] > TAlertViewHorizontalButtonCountMax) {
+    if (buttonsAlign == TAlertViewButtonsAlignHorizontal && _buttonsTexts &&
+        [_buttonsTexts count] > TAlertViewHorizontalButtonCountMax) {
         
         NSLog(@"TAlertViewButtonsAlignHorizontal cant be used with more than %i", (int)TAlertViewHorizontalButtonCountMax);
         _buttonsAlign = TAlertViewButtonsAlignVertical;
@@ -219,30 +361,8 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 {
     BOOL displayStyleDynamics = (_alertDisplayStyle == TAlertViewDisplayStyleDynamics);
     
-    NSString *defaultTitle = nil;
-    UIColor *textColor =[UIColor blackColor];
-    switch (_style) {
-        case TAlertViewStyleError:
-            defaultTitle = @"Oops...";
-            textColor = [UIColor redColor];
-            break;
-        case TAlertViewStyleWarning:
-            defaultTitle = @"Warning";
-            textColor = [UIColor orangeColor];
-            break;
-        case TAlertViewStyleSuccess:
-            defaultTitle = @"Success!";
-            textColor = [UIColor greenColor];
-            break;
-        case TAlertViewStyleInformation:
-            textColor = [UIColor blueColor];
-            break;
-        case TAlertViewStyleNeutral:
-        default:
-            break;
-    }
     if (!_title) {
-        _title = defaultTitle;
+        _title = _defaultTitleForStyle[@(_style)];
     }
     
     self.frame = [UIScreen mainScreen].bounds;
@@ -255,7 +375,7 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     CGRect aletViewFrame = CGRectMake(displayStyleDynamics?outsideMargin:0, outsideMargin * 4, self.frame.size.width - (displayStyleDynamics?(2*outsideMargin):0), 0);
     
     _alertView = [[UIView alloc] initWithFrame:aletViewFrame];
-    _alertView.backgroundColor = [UIColor whiteColor];
+    _alertView.backgroundColor = _alertBackgroundColor;
     _alertView.layer.cornerRadius = displayStyleDynamics?5:0;
     [_alertView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(aletViewPanGesture:)]];
     [self addSubview:_alertView];
@@ -267,43 +387,46 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     }
     
     if (_title) {
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
-        titleLabel.font = [UIFont systemFontOfSize:18];
-        titleLabel.textColor = textColor;
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        [self setLabel:titleLabel text:_title];
-        [_alertView addSubview:titleLabel];
-        yPos = CGRectGetMaxY(titleLabel.frame) + insideVerticalMargin;
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
+        _titleLabel.font = _titleFont;
+        _titleLabel.textColor = _titleColorForStyle[@(_style)];
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        [self setLabel:_titleLabel text:_title];
+        [_alertView addSubview:_titleLabel];
+        yPos = CGRectGetMaxY(_titleLabel.frame) + insideVerticalMargin;
     }
     
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
-    messageLabel.font = [UIFont systemFontOfSize:14];
-    messageLabel.textColor = [UIColor colorWithRed:0.3f green:0.3f blue:0.3f alpha:1.0f];
-    messageLabel.textAlignment = NSTextAlignmentCenter;
-    [self setLabel:messageLabel text:_message];
-    [_alertView addSubview:messageLabel];
+    _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
+    _messageLabel.font = _messageFont;
+    _messageLabel.textColor = _messageColor;
+    _messageLabel.textAlignment = NSTextAlignmentCenter;
+    [self setLabel:_messageLabel text:_message];
+    [_alertView addSubview:_messageLabel];
     
-    yPos = CGRectGetMaxY(messageLabel.frame) + insideVerticalMargin;
+    yPos = CGRectGetMaxY(_messageLabel.frame) + insideVerticalMargin;
     
-    if (_buttons && [_buttons count]) {
+    _buttonsViews = [[NSMutableArray alloc] init];
+    
+    if (_buttonsTexts && [_buttonsTexts count]) {
         NSInteger buttonIndex = 0;
         CGFloat   xPos = 0;
-        for (NSString *buttonTitle in _buttons) {
+        for (NSString *buttonTitle in _buttonsTexts) {
             
             CGFloat width = aletViewFrame.size.width;
             CGFloat height = 20;
             
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, width, 1)];
-            lineView.backgroundColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
-            [_alertView addSubview:lineView];
+            UIView *separatorsLine = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, width, 1)];
+            separatorsLine.backgroundColor = _separatorsLinesColor;
+            [_alertView addSubview:separatorsLine];
+            [_separatorsLines addObject:separatorsLine];
             yPos += insideVerticalMargin;
             
             if (_buttonsAlign == TAlertViewButtonsAlignHorizontal) {
                 if (buttonIndex > 0) {
                     yPos -= insideVerticalMargin;
-                    lineView.frame = CGRectMake(xPos, yPos - insideVerticalMargin, 1, height + insideVerticalMargin*2);
+                    separatorsLine.frame = CGRectMake(xPos, yPos - insideVerticalMargin, 1, height + insideVerticalMargin*2);
                 }
-                width /= [_buttons count];
+                width /= [_buttonsTexts count];
             }
             
             UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(xPos, yPos, width, height)];
@@ -311,15 +434,16 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
             UITapGestureRecognizer *buttonTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buttonTapped:)];
             [buttonView addGestureRecognizer:buttonTapGestureRecognizer];
             [_alertView addSubview:buttonView];
+            [_buttonsViews addObject:buttonView];
             
-            UILabel *button = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, buttonView.frame.size.width, buttonView.frame.size.height)];
-            button.font = [UIFont systemFontOfSize:14];
-            button.textColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
-            button.textAlignment = NSTextAlignmentCenter;
-            button.text = buttonTitle;
-            [buttonView addSubview:button];
+            UILabel *buttonLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, buttonView.frame.size.width, buttonView.frame.size.height)];
+            buttonLabel.font = _buttonsFont;
+            buttonLabel.textColor = _buttonsTextColor;
+            buttonLabel.textAlignment = NSTextAlignmentCenter;
+            buttonLabel.text = buttonTitle;
+            [buttonView addSubview:buttonLabel];
             
-            if ((_buttonsAlign == TAlertViewButtonsAlignHorizontal) && buttonIndex<([_buttons count]-1)) {
+            if ((_buttonsAlign == TAlertViewButtonsAlignHorizontal) && buttonIndex<([_buttonsTexts count]-1)) {
                 xPos += width;
             } else {
                 yPos = CGRectGetMaxY(buttonView.frame)+insideVerticalMargin/2.0f;
@@ -333,14 +457,14 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
         [self addGestureRecognizer:tap];
         
-        UILabel *closeLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
-        closeLabel.font = [UIFont systemFontOfSize:10];
-        closeLabel.textColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
-        closeLabel.textAlignment = NSTextAlignmentCenter;
-        [self setLabel:closeLabel text:@"Tap to close"];
-        [_alertView addSubview:closeLabel];
+        _closeLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
+        _closeLabel.font = [UIFont systemFontOfSize:10];
+        _closeLabel.textColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
+        _closeLabel.textAlignment = NSTextAlignmentCenter;
+        [self setLabel:_closeLabel text:@"Tap to close"];
+        [_alertView addSubview:_closeLabel];
         
-        yPos = CGRectGetMaxY(closeLabel.frame)+insideVerticalMargin/2.0f;
+        yPos = CGRectGetMaxY(_closeLabel.frame)+insideVerticalMargin/2.0f;
     }
     
     aletViewFrame.size.height = yPos;
