@@ -86,7 +86,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iPq-Do-kxI">
                                         <rect key="frame" x="8" y="274" width="144" height="30"/>
-                                        <state key="normal" title="Default UIAlertView">
+                                        <state key="normal" title="System UIAlertView">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
