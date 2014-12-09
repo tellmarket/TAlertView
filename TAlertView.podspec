@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name            = "TAlertView"
-  s.version         = "0.1.0"
+  s.version         = "0.2.0"
   s.summary         = "TAlertView is a replacement for UIAlertView"
   s.description     = <<-DESC
                         Computes the meaning of life.
@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
                             * simple to use
                             * block syntax
                             * physically animated user interaction
+                            * UIAppearance support
                        DESC
   s.homepage        = "https://github.com/tellmarket/"
   s.screenshots     = "https://github.com/tellmarket/TAlertView/raw/master/Github/Example.gif"
