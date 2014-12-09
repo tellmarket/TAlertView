@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     TAlertViewDisplayStyleMessage
 };
 
-@interface TAlertView()<UICollisionBehaviorDelegate>
+@interface TAlertView()
 
 @property (assign, nonatomic) TAlertViewDisplayStyle alertDisplayStyle;
 @property (strong, nonatomic) void (^callBackBlock)(TAlertView *alertView, NSInteger buttonIndex);
@@ -33,8 +33,6 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 @property (strong, nonatomic) UILabel               *messageLabel;
 @property (strong, nonatomic) UILabel               *titleLabel;
 @property (strong, nonatomic) UILabel               *closeLabel;
-@property (strong, nonatomic) NSMutableDictionary   *titleColorForStyle;
-@property (strong, nonatomic) NSMutableDictionary   *defaultTitleForStyle;
 
 @end
 
@@ -56,37 +54,6 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     appearance.tapToCloseFont       = [UIFont systemFontOfSize:10];
     appearance.tapToCloseColor      = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1.0f];
     appearance.tapToCloseText       = @"Tap to close";
-    
-    NSArray *styles = @[@(TAlertViewStyleNeutral),
-                        @(TAlertViewStyleInformation),
-                        @(TAlertViewStyleSuccess),
-                        @(TAlertViewStyleWarning),
-                        @(TAlertViewStyleError)];
-    
-    for (NSNumber *styleNumber in styles) {
-        TAlertViewStyle style = [styleNumber intValue];
-        switch (style) {
-            case TAlertViewStyleError:
-                [appearance setTitleColor:[UIColor redColor] forAlertViewStyle:style];
-                [appearance setDefaultTitle:@"Oops..." forAlertViewStyle:style];
-                break;
-            case TAlertViewStyleWarning:
-                [appearance setTitleColor:[UIColor orangeColor] forAlertViewStyle:style];
-                [appearance setDefaultTitle:@"Warning" forAlertViewStyle:style];
-                break;
-            case TAlertViewStyleSuccess:
-                [appearance setTitleColor:[UIColor greenColor] forAlertViewStyle:style];
-                [appearance setDefaultTitle:@"Success!" forAlertViewStyle:style];
-                break;
-            case TAlertViewStyleInformation:
-                [appearance setTitleColor:[UIColor blueColor] forAlertViewStyle:style];
-                break;
-            case TAlertViewStyleNeutral:
-            default:
-                break;
-        }
-    }
-    
 }
 
 +(void)hideAll
@@ -116,8 +83,6 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
         _buttonsAlign           = TAlertViewButtonsAlignVertical;
         _buttonsViews           = [[NSMutableArray alloc] init];
         _separatorsLines        = [[NSMutableArray alloc] init];
-        _titleColorForStyle     = [[NSMutableDictionary alloc] init];
-        _defaultTitleForStyle   = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -219,14 +184,12 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 }
 
 -(void)setTitleColor:(UIColor*)color forAlertViewStyle:(TAlertViewStyle)style {
-    _titleColorForStyle[@(style)] = color;
     if (self.style == style && _titleLabel) {
         _titleLabel.textColor = color;
     }
 }
 
 -(void)setDefaultTitle:(NSString*)defaultTitle forAlertViewStyle:(TAlertViewStyle)style {
-    _defaultTitleForStyle[@(style)] = defaultTitle;
     if (self.style == style && _titleLabel) {
         _titleLabel.text = defaultTitle;
     }
@@ -244,8 +207,9 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
 {
     if (buttonsAlign == TAlertViewButtonsAlignHorizontal && _buttonsTexts &&
         [_buttonsTexts count] > TAlertViewHorizontalButtonCountMax) {
-        
+#ifdef DEBUG
         NSLog(@"TAlertViewButtonsAlignHorizontal cant be used with more than %i", (int)TAlertViewHorizontalButtonCountMax);
+#endif
         _buttonsAlign = TAlertViewButtonsAlignVertical;
     } else {
         _buttonsAlign = buttonsAlign;
@@ -274,7 +238,6 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     [groundCollisionBehavior addBoundaryWithIdentifier:@"ground"
                                              fromPoint:CGPointMake(CGRectGetMinX(self.frame), CGRectGetMidY(self.frame))
                                                toPoint:CGPointMake(CGRectGetMaxX(self.frame), CGRectGetMidY(self.frame))];
-    groundCollisionBehavior.collisionDelegate = self;
     [_animator addBehavior:groundCollisionBehavior];
     
     UICollisionBehavior *wall1CollisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[_alertView]];
@@ -378,17 +341,38 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     }
 }
 
-#pragma mark UICollisionBehaviorDelegate
-
-
 #pragma mark private
 
 -(void)addSubviewsWithOverlay:(BOOL)withOverlay
 {
     BOOL displayStyleDynamics = (_alertDisplayStyle == TAlertViewDisplayStyleDynamics);
     
+    UIColor *titleColor = [UIColor blackColor];
+    NSString *defaultTitle = nil;
+    
+    switch (_style) {
+        case TAlertViewStyleError:
+            titleColor = [UIColor redColor];
+            defaultTitle = @"Oops...";
+            break;
+        case TAlertViewStyleWarning:
+            titleColor = [UIColor orangeColor];
+            defaultTitle = @"Warning";
+            break;
+        case TAlertViewStyleSuccess:
+            titleColor = [UIColor greenColor];
+            defaultTitle = @"Success!";
+            break;
+        case TAlertViewStyleInformation:
+            titleColor = [UIColor blueColor];
+            break;
+        case TAlertViewStyleNeutral:
+        default:
+            break;
+    }
+    
     if (!_title) {
-        _title = _defaultTitleForStyle[@(_style)];
+        _title = defaultTitle;
     }
     
     self.frame = [UIScreen mainScreen].bounds;
@@ -415,7 +399,8 @@ typedef NS_ENUM(NSUInteger, TAlertViewDisplayStyle) {
     if (_title) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(insideHorisontalMargin, yPos, aletViewFrame.size.width - 2*insideHorisontalMargin, 0)];
         _titleLabel.font = _titleFont;
-        _titleLabel.textColor = _titleColorForStyle[@(_style)];
+        
+        _titleLabel.textColor = titleColor;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         [self setLabel:_titleLabel text:_title];
         [_alertView addSubview:_titleLabel];

@@ -71,27 +71,23 @@
     [alert show];
 }
 
-- (IBAction)segmentedControlValueChanged:(UISegmentedControl*)sender {
+- (IBAction)useCustomAppearance:(UIButton*)sender {
+    TAlertView *appearance = [TAlertView appearance];
+    appearance.alertBackgroundColor     = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+    appearance.titleFont                = [UIFont fontWithName:@"Baskerville" size:22];
+    appearance.messageColor             = [UIColor whiteColor];
+    appearance.messageFont              = [UIFont fontWithName:@"Baskerville-SemiBoldItalic" size:14];
+    appearance.buttonsTextColor         = [UIColor whiteColor];
+    appearance.buttonsFont              = [UIFont fontWithName:@"Baskerville-Bold" size:16];
+    appearance.separatorsLinesColor     = [UIColor grayColor];
+    appearance.tapToCloseFont           = [UIFont fontWithName:@"Baskerville" size:10];
+    appearance.tapToCloseColor          = [UIColor grayColor];
+    appearance.tapToCloseText           = @"Touch to close";
+    [appearance setTitleColor:[UIColor orangeColor] forAlertViewStyle:TAlertViewStyleError];
+    [appearance setDefaultTitle:@"Error" forAlertViewStyle:TAlertViewStyleError];
+    [appearance setTitleColor:[UIColor whiteColor] forAlertViewStyle:TAlertViewStyleNeutral];
     
-    if (sender.selectedSegmentIndex == 0) {
-        [TAlertView initialize];
-    } else {
-        TAlertView *appearance = [TAlertView appearance];
-        appearance.alertBackgroundColor     = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-        appearance.titleFont                = [UIFont fontWithName:@"Baskerville" size:22];
-        appearance.messageColor             = [UIColor whiteColor];
-        appearance.messageFont              = [UIFont fontWithName:@"Baskerville-SemiBoldItalic" size:14];
-        appearance.buttonsTextColor         = [UIColor whiteColor];
-        appearance.buttonsFont              = [UIFont fontWithName:@"Baskerville-Bold" size:16];
-        appearance.separatorsLinesColor     = [UIColor grayColor];
-        appearance.tapToCloseFont           = [UIFont fontWithName:@"Baskerville" size:10];
-        appearance.tapToCloseColor          = [UIColor grayColor];
-        appearance.tapToCloseText           = @"Touch to close";
-        [appearance setTitleColor:[UIColor orangeColor] forAlertViewStyle:TAlertViewStyleError];
-        [appearance setDefaultTitle:@"Error" forAlertViewStyle:TAlertViewStyleError];
-        [appearance setTitleColor:[UIColor whiteColor] forAlertViewStyle:TAlertViewStyleNeutral];
-    }
+    sender.enabled = NO;
 }
-
 
 @end
